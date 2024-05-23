@@ -36,9 +36,16 @@ namespace btree {
         }
     };
 
+    struct BTreeException {
+        std::string message;
+        std::string function;
+        BTreeException(const std::string& msg, const std::string& fun) : message(msg),function(fun) {}
+        const char* what() const { return (message + " at function " + function).c_str(); }
+    };
+
     template<typename K,typename V>
     using BTree = Node<K,V>*;
-    // prototypes
+
     template<typename K,typename V>
     BTree<K,V> createEmptyBTree(int minChildren = MIN_CHILDREN);
 
@@ -46,7 +53,7 @@ namespace btree {
     bool isEmpty(const BTree<K,V>&);
 
     template<typename K,typename V>
-    bool search(const BTree<K,V>&, const K&, V&,);
+    bool search(const BTree<K,V>&, const K&, V&);
 
     template<typename K,typename V>
     void insert(BTree<K,V>&, const K&, const V&, int minChildren = MIN_CHILDREN);
@@ -63,8 +70,13 @@ namespace btree {
     template<typename K,typename V>
     void print(BTree<K,V>& t);
 
+    template<typename K,typename V>
+    int findKey(BTree<K,V>& t, const K& key);
 
-    #include "btree.inl"
+    #include "create.inl"
+    #include "read.inl"
+    #include "update.inl"
+    #include "delete.inl"
 
 }
 

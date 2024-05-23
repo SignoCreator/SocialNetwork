@@ -142,7 +142,7 @@ struct Network {
     btree::Btree partecipations;
 };
 ```
-### <span style="color:#F18F01"> PERCHE' HO SCELTO B-TREE PER TUTTE</span>
+### <span style="color:#F18F01"> PERCHE' HO SCELTO B-TREE TRA TUTTE</span>
 
 - Ho scelto di utilizzare una struttura dati di tipo B-Tree per rappresentare le entità del social network in quanto è una struttura dati che permette di memorizzare e gestire in modo efficiente un grande numero di dati.
 - Inoltre, i B-Tree sono strutture dati bilanciate che permettono di effettuare operazioni di ricerca, inserimento e cancellazione in tempo logaritmico rispetto al numero di elementi memorizzati.

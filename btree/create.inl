@@ -1,7 +1,6 @@
 template<typename K,typename V>
 BTree<K,V> createEmptyBTree(int minChildren) {
-    BTree<K,V> t = new Node<K,V>(minChildren);
-    return t;
+    return new Node<K,V>(minChildren);
 }
 
 template<typename K,typename V>
@@ -9,21 +8,6 @@ bool isEmpty(const BTree<K,V>& t) {
     return t == EMPTY_TREE;
 }
 
-template<typename K,typename V>
-bool search(const BTree<K,V>& t, const K& key, V& value) {
-    if(isEmpty(t))
-        return false;
-    int i = 0;
-    while (i < t->n && key > t->keys[i])
-        i++;
-    if (i < t->n && key == t->keys[i]) {
-        value = t->values[i];
-        return true;
-    }
-    if (t->isLeaf)
-        return false;
-    return search(t->children[i], key, value);
-}
 
 template<typename K, typename V>
 void splitChild(BTree<K, V>& t, int i, int minChildren) {
@@ -66,6 +50,7 @@ void splitChild(BTree<K, V>& t, int i, int minChildren) {
 
 template<typename K, typename V>
 void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
+    const int MAX_CHILDREN = 2 * minChildren;
     int i = t->n - 1;
 
     if (t->isLeaf) {
@@ -80,7 +65,7 @@ void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren
     } else {
         while (i >= 0 && t->keys[i] > key)
             i--;
-        if (t->children[i + 1]->n == 2 * minChildren - 1) {
+        if (t->children[i + 1]->n == MAX_CHILDREN - 1) {
             splitChild(t, i + 1, minChildren);
             if (t->keys[i + 1] < key)
                 i++;
@@ -92,13 +77,14 @@ void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren
 
 template<typename K, typename V>
 void insert(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
+    const int MAX_CHILDREN = 2 * minChildren;
     if (isEmpty(t)) {
         t = new Node<K, V>(minChildren);
         t->keys[0] = key;
         t->values[0] = value;
         t->n = 1;
     } else {
-        if (t->n == 2 * minChildren - 1) {
+        if (t->n == MAX_CHILDREN - 1) {
             BTree<K,V> s = new Node<K, V>(minChildren);
             s->children[0] = t;
             s->isLeaf = false;
@@ -108,33 +94,17 @@ void insert(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
                 i++;
             insertNonFull(s->children[i], key, value, minChildren);
             t = s;
-        } else {
+        } else
             insertNonFull(t, key, value, minChildren);
-        }
     }
 }
 
 
 
-template<typename K,typename V>
-bool remove(BTree<K,V>& t, const K& key) {
-    // TODO : implementare la funzione insert,
-    //  ma prima creare un documento dove si spiega
-    //  come funziona la funzione remove
-    return true;
-}
 
 
 
-template<typename K,typename V>
-void print(BTree<K,V>& t) {
-    if (t != nullptr) {
-        for (int i = 0; i < t->n; i++) {
-            if (!t->isLeaf)
-                print(t->children[i]);
-            std::cout << " " << t->keys[i];
-        }
-        if (!t->isLeaf)
-            print(t->children[t->n]);
-    }
-}
+
+
+
+
