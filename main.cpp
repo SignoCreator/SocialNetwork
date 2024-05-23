@@ -6,29 +6,35 @@ using namespace btree;
 
 int main() {
     // Create an empty BTree
-    BTree<int, string> btree = createEmptyBTree<int, string>();
+    BTree<int, string> mybtree = createEmptyBTree<int, string>(4);
 
     // Check if the BTree is empty
-    if (isEmpty(btree)) {
+    if (isEmpty(mybtree)) {
         cout << "The BTree is empty." << endl;
     } else {
         cout << "The BTree is not empty." << endl;
     }
-
-    // Insert a key-value pair into the BTree
-    if (insert(btree, 1, std::string("one"))) {
-        cout << "Insertion successful." << endl;
-    } else {
-        cout << "Insertion failed." << endl;
+    cout<< "start inserting\n";
+    // Insert some key-value pairs into the BTree
+    for (int i = 1; i <= 1000000; i++) {
+        btree::insert(mybtree, i, "value" + to_string(i));
+        cout << "Insertion of key " << i << " successful." << endl;
     }
-
-    // Search for a key in the BTree
-    string value = "one";
-    if (search(btree, 1, value)) {
-        cout << "Found key 1 with value: " << value << endl;
+    cout<< "start printing the btree\n";
+    // Print the BTree
+    print(mybtree);
+    //search
+    string value = "122";
+    int key = stoi(value);
+    int operations = 0;
+    cout<< "Searching for key "<<value<<"..." << endl;
+    bool found = search(mybtree, key, value, operations);
+    if (found) {
+        cout << "Key "<<key<<" found with value: " << value << endl;
     } else {
-        cout << "Key 1 not found." << endl;
+        cout << "Key "<<key<<" not found." << endl;
     }
+    cout << "Number of operations: " << operations << endl;
 
     return 0;
 }
