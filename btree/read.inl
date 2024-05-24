@@ -1,3 +1,5 @@
+
+#define TROVATO true
 template<typename K,typename V>
 bool search(const BTree<K,V>& t, const K& key, V& value) {
     if(isEmpty(t))
@@ -7,17 +9,22 @@ bool search(const BTree<K,V>& t, const K& key, V& value) {
         i++;
     if (i < t->n && key == t->keys[i]) {
         value = t->values[i];
-        return true;
+        return TROVATO;
     }
-    if (t->isLeaf){
-        throw BTreeException("Key not found","search");
-    }
-    return search(t->children[i], key, value);
+    return (t->isLeaf) ? false : search(t->children[i], key, value);
 }
 
 template<typename K,typename V>
+bool exists(const BTree<K,V>& t, const K& key) {
+    V value;
+    return search(t, key, value);
+}
+
+
+
+template<typename K,typename V>
 void print(BTree<K,V>& t) {
-    if (t != nullptr) {
+    if (t != EMPTY_TREE) {
         for (int i = 0; i < t->n; i++) {
             if (!t->isLeaf)
                 print(t->children[i]);

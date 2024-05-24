@@ -41,7 +41,7 @@ int insertMenu(){
     }
 }
 int main() {
-    BTree<string, int> t = createEmptyBTree<string, int>(4);
+    BTree<string, int> t = createEmptyBTree<string, int>(10);
     int choise;
     int value;
     string key;
@@ -54,14 +54,22 @@ int main() {
                         cin >> key;
                         cout << "Enter value: ";
                         cin >> value;
-                        insert(t, key, value);
+                        try{
+                            insert(t, key, value);
+                        }catch (BTreeException& e){
+                            cout <<  e.what() << endl;
+                        }
                         break;
                     case 2:
                         int n;
                         cout << "Enter number of elements: ";
                         cin >> n;
                         for (int i = 0; i < n; i++) {
-                            insert(t, std::to_string(i) , i);
+                            try{
+                                insert(t, std::to_string(i) , i);
+                            }catch (BTreeException& e){
+                                cout << e.what() << endl;
+                            }
                         }
                         break;
                 }

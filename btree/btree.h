@@ -14,13 +14,14 @@ namespace btree {
 
     const int MIN_CHILDREN = 2;
     #define EMPTY_TREE nullptr
-    template<typename K,typename V>
+    template<typename K,typename V>     // K is the key type and V is the value type
     struct Node {
        K *keys;
        V *values;
        Node<K,V> **children;
        int n;
        bool isLeaf = false;
+       // Constructor
        Node(int minChildren = MIN_CHILDREN) {
             keys = new K[2 * minChildren - 1];
             values = new V[2 * minChildren - 1];
@@ -28,7 +29,7 @@ namespace btree {
             isLeaf = true;
             n = 0;
         }
-
+        // Destructor
         ~Node() {
             delete[] keys;
             delete[] values;
@@ -38,10 +39,12 @@ namespace btree {
 
     struct BTreeException {
         std::string message;
-        std::string function;
-        BTreeException(const std::string& msg, const std::string& fun) : message(msg),function(fun) {}
-        const char* what() const { return (message + " at function " + function).c_str(); }
+        BTreeException(const std::string& msg, const std::string& fun) {
+            message = msg + " at function " + fun;
+        }
+        const char* what() const { return message.c_str(); }
     };
+    // Prototypes
 
     template<typename K,typename V>
     using BTree = Node<K,V>*;
@@ -53,7 +56,10 @@ namespace btree {
     bool isEmpty(const BTree<K,V>&);
 
     template<typename K,typename V>
-    bool search(const BTree<K,V>&, const K&, V&);
+    bool search(const BTree<K,V>&, const K&, V& value);
+
+    template<typename K,typename V>
+    bool exists(const BTree<K,V>&, const K&);
 
     template<typename K,typename V>
     void insert(BTree<K,V>&, const K&, const V&, int minChildren = MIN_CHILDREN);
@@ -72,7 +78,10 @@ namespace btree {
 
     template<typename K,typename V>
     int findKey(BTree<K,V>& t, const K& key);
-
+    /*
+     I decided to split the implementation in multiple files to make it more readable ( .inl is an extension for inline files).
+     I splitted the implementation in 4 files following the CRUD pattern:
+     */
     #include "create.inl"
     #include "read.inl"
     #include "update.inl"

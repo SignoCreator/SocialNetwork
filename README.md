@@ -149,5 +149,19 @@ struct Network {
 - Questa struttura permette anche di memorizzare i dati in modo ordinato, facilitando l'implementazione delle funzioni richieste.
 - Un Network richiede di memorizzare molti dati, B-Tree è una struttura dati che permette di memorizzare e gestire in modo efficiente un grande numero di dati.
 
+#### <span style="color:#F18F01"> CARATTERISTICHE B-TREE</span>
+
+- I B-Tree sono alberi bilanciati, ovvero alberi in cui la differenza di altezza tra i sottoalberi sinistro e destro di ogni nodo è al più 1.
+- Essendo bilanciati i B-Tree garantiscono che l'altezza dell'albero sia logaritmica rispetto al numero di nodi, quindi le operazioni di ricerca, inserimento e cancellazione hanno complessità logaritmica.
+- Implementare questa struttura forse è più complesso rispetto ad altre strutture dati, ma è molto efficiente per memorizzare e gestire grandi quantità di dati come nel caso di un social network.
+- Ogni nodo del B-Tree può contenere un numero variabile di chiavi e puntatori ai figli e questo ci permette anche di avere una complessità logB(n) per le operazioni di ricerca, inserimento e cancellazione, dove B è l'ordine del B-Tree.
+- Inoltre, i B-Tree sono strutture dati che permettono di memorizzare i dati in modo ordinato, facilitando l'implementazione delle funzioni richieste.
+
+### link utili
+- [B-Tree wikipedia](https://en.wikipedia.org/wiki/B-tree)
+- [B-Tree geekforgeeks](https://www.geeksforgeeks.org/b-tree-set-1-introduction-2/)
+
+
+
 
 
