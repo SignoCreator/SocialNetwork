@@ -4,7 +4,13 @@
 #ifndef SOCIALNETWORK_IOSTREAM_H
 #define SOCIALNETWORK_IOSTREAM_H
 #include "iostream"
+using namespace std;
 #endif
+#ifndef SOCIALNETWORK_LIST_ARRAY_H
+#include "list-array.h"
+using namespace list;
+#endif
+#include "functional"
 #ifndef SOCIALNETWORK_BTREE_H
 #define SOCIALNETWORK_BTREE_H
 /*
@@ -12,7 +18,7 @@
  */
 namespace btree {
 
-    const int MIN_CHILDREN = 2;
+    extern int MIN_CHILDREN;
     #define EMPTY_TREE nullptr
     template<typename K,typename V>
     struct Node {
@@ -26,6 +32,7 @@ namespace btree {
             values = new V[2 * minChildren - 1];
             children = new Node<K, V>*[2 * minChildren];
             isLeaf = true;
+            MIN_CHILDREN = minChildren;
             n = 0;
         }
 
@@ -56,13 +63,10 @@ namespace btree {
     bool search(const BTree<K,V>&, const K&, V&);
 
     template<typename K,typename V>
+    bool searchKeyAndValue(const BTree<K,V>&, const K&, V&);
+
+    template<typename K,typename V>
     void insert(BTree<K,V>&, const K&, const V&, int minChildren = MIN_CHILDREN);
-
-    template<typename K,typename V>
-    void insertNonFull(BTree<K,V>& t, const K& key, const V& value, int minChildren);
-
-    template<typename K,typename V>
-    void splitChild(BTree<K,V>& t, int i, int minChildren);
 
     template<typename K,typename V>
     bool remove(BTree<K,V>&, const K&);
@@ -72,6 +76,9 @@ namespace btree {
 
     template<typename K,typename V>
     int findKey(BTree<K,V>& t, const K& key);
+
+    template<typename K,typename V>
+    void toList(BTree<K,V>& t, list::List& list);
 
     #include "create.inl"
     #include "read.inl"

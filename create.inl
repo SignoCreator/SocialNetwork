@@ -5,7 +5,7 @@ BTree<K,V> createEmptyBTree(int minChildren) {
 
 template<typename K,typename V>
 bool isEmpty(const BTree<K,V>& t) {
-    return t == EMPTY_TREE;
+    return t->n == 0;
 }
 
 
@@ -55,6 +55,8 @@ void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren
 
     if (t->isLeaf) {
         while (i >= 0 && t->keys[i] > key) {
+            if(t->keys[i] == key)
+                throw BTreeException("Key already exists","insertNonFull");
             t->keys[i + 1] = t->keys[i];
             t->values[i + 1] = t->values[i];
             i--;
