@@ -47,8 +47,7 @@ namespace btree {
         std::string message;
         std::string function;
         BTreeException(const std::string& msg, const std::string& fun) : message(msg),function(fun) {}
-        const char* what() const { return (message + " at function " + function).c_str(); }
-    };
+        std::string what() const { return message + " at function " + function; }    };
 
     template<typename K,typename V>
     using BTree = Node<K,V>*;
@@ -63,10 +62,13 @@ namespace btree {
     bool search(const BTree<K,V>&, const K&, V&);
 
     template<typename K,typename V>
+    bool exists(const BTree<K,V>&, const K&);
+
+    template<typename K,typename V>
     bool searchKeyAndValue(const BTree<K,V>&, const K&, V&);
 
     template<typename K,typename V>
-    void insert(BTree<K,V>&, const K&, const V&, int minChildren = MIN_CHILDREN);
+    bool insert(BTree<K,V>&, const K&, const V&, int minChildren = MIN_CHILDREN);
 
     template<typename K,typename V>
     bool remove(BTree<K,V>&, const K&);
@@ -79,6 +81,9 @@ namespace btree {
 
     template<typename K,typename V>
     void toList(BTree<K,V>& t, list::List& list);
+
+    template<typename K, typename V, typename Condizione>
+    void idSelector(Node<K, V>* const& t, Condizione cond, list::List& l);
 
     #include "create.inl"
     #include "read.inl"

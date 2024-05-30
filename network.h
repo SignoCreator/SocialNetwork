@@ -108,6 +108,8 @@ namespace network{
   // Ritorna true se c'e un membro con user_Login = usr_Log
   // Altrimenti ritorna false
   bool makeMoreFriends(string usr_Log, Network &net);
+  void printNetwork(const Network& net);
+
 }
 
 #endif

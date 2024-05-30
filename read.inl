@@ -32,15 +32,17 @@ bool searchKeyAndValue(const BTree<K,V>& t, const K& key,const V& value) {
 }
 
 
-
 template<typename K,typename V>
 void print(BTree<K,V>& t) {
     if (t != nullptr) {
         for (int i = 0; i < t->n; i++) {
+            // Print the subtree rooted at child i
             if (!t->isLeaf)
                 print(t->children[i]);
-            std::cout << " " << t->keys[i];
+            // Print key and value
+            std::cout << "Key: " << t->keys[i] << ", Value: " << t->values[i] << std::endl;
         }
+        // Print the subtree rooted at last child
         if (!t->isLeaf)
             print(t->children[t->n]);
     }
@@ -62,14 +64,21 @@ void toList(BTree<K,V>& t, list::List& list) {
 
 
 template<typename K, typename V, typename Condizione>
-void select(Node<K, V>* const& t, Condizione cond, list::List& l) {
-    if (t != nullptr) {
+void idSelector(Node<K, V>* const& t, Condizione cond, list::List& l) {
+    if (!isEmpty(t)) {
         for (int i = 0; i < t->n; i++) {
-            select(t->children[i], cond, l);
+            idSelector(t->children[i], cond, l);
             if (cond(t->keys[i], t->values[i])) {
                 list::add(list::size(l), t->keys[i], l);
             }
         }
-        select(t->children[t->n], cond, l);
+        idSelector(t->children[t->n], cond, l);
     }
 }
+template<typename K,typename V>
+bool exists(const BTree<K,V>& t, const K& key) {
+    V value;
+    return search(t, key, value);
+}
+
+

@@ -23,7 +23,7 @@ bool isEmpty(const BTree<K,V>& t) {
  *  Insert a key-value pair in the BTree. If the key already exists, an exception is thrown.
  */
 template<typename K, typename V>
-void insert(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
+bool insert(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
 
     const int MAX_CHILDREN = 2 * minChildren;
     // If the tree is empty, create a new node with the key-value pair.
@@ -32,6 +32,7 @@ void insert(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
         t->keys[0] = key;
         t->values[0] = value;
         t->n = 1;
+        return true;
     } else { // If the tree is not empty, insert the key-value pair in the tree.
         if (t->n == MAX_CHILDREN - 1) { // If the node is full, split the node.
             BTree<K,V> s = new Node<K, V>(minChildren); // Create a new node with the minimum number of children.
@@ -42,11 +43,13 @@ void insert(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
             int i = 0;
             if (s->keys[0] < key)
                 i++;
-            insertNonFull(s->children[i], key, value, minChildren); // Insert the key-value pair in the child.
+            bool res = insertNonFull(s->children[i], key, value, minChildren); // Insert the key-value pair in the child.
             t = s;
+            return res;
         } else
-            insertNonFull(t, key, value, minChildren); // Insert the key-value pair in the node t.
+            return insertNonFull(t, key, value, minChildren); // Insert the key-value pair in the node t.
     }
+
 }
 /*
  *  This is an auxiliary function to insert a key-value pair in a non-full node of the BTree.
@@ -93,7 +96,7 @@ void splitChild(BTree<K, V>& t, int i, int minChildren) {
  * The function is called recursively until the key-value pair is inserted in a leaf node.
  */
 template<typename K, typename V>
-void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
+bool insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
     const int MAX_CHILDREN = 2 * minChildren;
     int i = t->n - 1;
 
@@ -106,7 +109,8 @@ void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren
         }
         // Check if the key already exists in the node
         if (i >= 0 && t->keys[i] == key)
-            throw BTreeException("Key already exists","insertNonFull");
+            return false;
+            //throw BTreeException("Key already exists","insertNonFull");
         t->keys[i + 1] = key;
         t->values[i + 1] = value;
         t->n++;
@@ -115,7 +119,8 @@ void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren
             i--;
         // Check if the key already exists in the node
         if (i >= 0 && t->keys[i] == key)
-            throw BTreeException("Key already exists","insertNonFull");
+            return false;
+            //throw BTreeException("Key already exists","insertNonFull");
         if (t->children[i + 1]->n == MAX_CHILDREN - 1) {
             splitChild(t, i + 1, minChildren);
             if (t->keys[i + 1] < key)
@@ -123,6 +128,7 @@ void insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren
         }
         insertNonFull(t->children[i + 1], key, value, minChildren);
     }
+    return true;
 }
 
 

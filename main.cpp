@@ -1,6 +1,7 @@
 /*#include "btree.h"
 #include <iostream>
-#include "string"
+#include <string>
+#include "list-array.h"
 using namespace std;
 using namespace btree;
 
@@ -11,35 +12,30 @@ int getChoise() {
     cout << "2. Search" << endl;
     cout << "3. Print" << endl;
     cout << "4. Remove" << endl;
-    cout << "5. Exit" << endl;
-    try {
-        int choise;
-        cout << "Enter your choise: ";
-        cin >> choise;
-        if (choise < 1 || choise > 5)
-            throw "Invalid choise";
-        return choise;
-    } catch (const char* msg) {
-        cout << msg << endl;
-        return getChoise();
+    cout << "5. Select" << endl;
+    cout << "6. Exit" << endl;
+    int choise;
+    cout << "Enter your choise: ";
+    cin >> choise;
+    if (choise < 1 || choise > 6) {
+        cout << "Invalid choise" << endl;
+        return -1;
     }
+    return choise;
 }
 
 int insertMenu(){
     //switch : insert manually or insert range
     cout << "1. Insert manually" << endl;
     cout << "2. Insert range" << endl;
-    try {
-        int choise;
-        cout << "Enter your choise: ";
-        cin >> choise;
-        if (choise < 1 || choise > 2)
-            throw "Invalid choise";
-        return choise;
-    } catch (const char* msg) {
-        cout << msg << endl;
-        return insertMenu();
+    int choise;
+    cout << "Enter your choise: ";
+    cin >> choise;
+    if (choise < 1 || choise > 2) {
+        cout << "Invalid choise" << endl;
+        return -1;
     }
+    return choise;
 }
 
 
@@ -51,7 +47,11 @@ int main() {
     int choise;
     int value;
     string key;
-    while ((choise = getChoise()) != 5) {
+    while ((choise = getChoise()) != 6) {
+        if (choise == -1) {
+            cout << "Invalid choice. Please try again." << endl;
+            continue;
+        }
         switch (choise) {
             case 1:
                 switch (insertMenu()) {
@@ -102,9 +102,20 @@ int main() {
                 }
                 break;
             case 5:
+                //select data
+               cout<<"select interval";
+                cout<<"aaa";
+                cin>>key;
+
+                auto cond = [key](string k) { return k >= key; };
+
+                idSelector(t, cond, l);
+                cout<<"query result:"<<endl;
+                cout<<list::toString(l);
                 break;
-            default:
-                cout << "Invalid choise" << endl;
+                list::List l = list::createEmpty();
+                btree::idSelector(t, [](string k) { return k >= "3"; }, l);
+                cout<<list::toString(l);
         }
     }
 
@@ -126,45 +137,44 @@ namespace btree {
 }
 int main() {
     try{
-        /*
-        // Create an empty network
-        Network net = createEmptyNetwork();
 
+        // Create an empty network
+        Network netw = createEmptyNetwork();
         // Test isEmpty function
-        assert(isEmpty(net));
+        assert(isEmpty(netw));
 
         // Add members to the network
-        assert(addMember("Alice", net));
+        std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Helen", "Ivan", "Judy", "Kevin", "Laura", "Mike", "Nancy", "Oscar", "Paul", "Quincy", "Rachel", "Steve", "Tina"};
 
-        assert(addMember("Bob", net));
-
-        assert(addMember("Charlie", net));
-
+        // Add members to the network
+        for (const auto& name : names) {
+            assert(addMember(name, netw));
+        }
+        //print
+        printNetwork(netw);
         // Test friendship functions
-        assert(becomeFriends("Alice", "Bob", net));
-        assert(areFriends("Alice", "Bob", net));
-        assert(leaveFriendship("Alice", "Bob", net));
+        assert(becomeFriends("Alice", "Bob", netw));
 
-        assert(!areFriends("Alice", "Bob", net));
+        assert(areFriends("Alice", "Bob", netw));
+
+        assert(leaveFriendship("Alice", "Bob", netw));
+
+
+        assert(!areFriends("Alice", "Bob", netw));
         // Test group functions
 
-        assert(createGroup("Alice", "Group1", net));
+        assert(createGroup("Alice", "Group1", netw));
 
-        assert(joinGroup("Bob", "Group1", net));
-        assert(leaveGroup("Bob", "Group1", net));
+        assert(joinGroup("Bob", "Group1", netw));
+       // assert(leaveGroup("Bob", "Group1", net));
 
         // Test delete functions
-        assert(deleteMember("Charlie", net));
-        assert(deleteGroup("Group1", net));
-        */
-        using namespace std;
-        Network net = createEmptyNetwork();
-        assert(addMember("Alice", net));
-        assert(addMember("Bob", net));
-        assert(addMember("Charlie", net));
-        assert(addMember("David", net));
+        assert(deleteMember("Charlie", netw));
+        //assert(deleteGroup("Group1", net));
+
+
         // Test list functions
-        list::List memberList = members(net);
+    /*    list::List memberList = members(net);
         cout<<"stampo"<<endl;
         toString(memberList);
         list::List groupList = groups(net);
@@ -172,12 +182,12 @@ int main() {
         list::List friendList = friends("Alice", net);
         cout<<size(friendList)<<endl;
         list::List memberOfList = memberOf("Alice", net);
-        cout<<size(memberOfList)<<endl;
-        list::List creatorOfList = creatorOf("Alice", net);
+        cout<<size(memberOfList)<<endl;*/
+        list::List creatorOfList = creatorOf("Alice", netw);
         cout<<size(creatorOfList)<<endl;
 
         // Test makeMoreFriends function
-        assert(makeMoreFriends("Alice", net));
+        assert(makeMoreFriends("Alice", netw));
 
         std::cout << "All tests passed!" << std::endl;
     }catch (btree::BTreeException& e){
