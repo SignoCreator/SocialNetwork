@@ -135,6 +135,9 @@ using namespace network;
 namespace btree {
     int MIN_CHILDREN = 2; // or whatever value you want to assign
 }
+#include "list-array.h"
+using namespace list;
+#include "vector"
 int main() {
     try{
 
@@ -144,7 +147,7 @@ int main() {
         assert(isEmpty(netw));
 
         // Add members to the network
-        std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Helen", "Ivan", "Judy", "Kevin", "Laura", "Mike", "Nancy", "Oscar", "Paul", "Quincy", "Rachel", "Steve", "Tina"};
+        vector<string> names = {"Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Helen", "Ivan", "Judy", "Kevin", "Laura", "Mike", "Nancy", "Oscar", "Paul", "Quincy", "Rachel", "Steve", "Tina"};
 
         // Add members to the network
         for (const auto& name : names) {

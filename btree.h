@@ -85,10 +85,12 @@ namespace btree {
     template<typename K, typename V, typename Condizione>
     void idSelector(Node<K, V>* const& t, Condizione cond, list::List& l);
 
+    template<typename K,typename V>
+    void mergeTrees(BTree<K,V>& t1, BTree<K,V>& t2);
     #include "create.inl"
     #include "read.inl"
     #include "update.inl"
-    #include "delete.inl"
+    //#include "delete.inl"
 
 }
 
