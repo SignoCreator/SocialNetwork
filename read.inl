@@ -54,21 +54,22 @@ void toList(BTree<K,V>& t, list::List& list) {
     }
     for (int i = 0; i < t->n; i++) {
         toList(t->children[i], list);
+        std::cout << t->keys[i] << " ";
         list::add(list::size(list), t->keys[i], list);
     }
     toList(t->children[t->n], list);
 }
 
-void whereEqualsTo(BTree<string, int>& t, const string& key, const int& value,list::List& list) {
-    //scorri tutto l'albero
-    if (isEmpty(t)) {
-        return;
-    }
-    for (int i = 0; i < t->n; i++) {
-        whereEqualsTo(t->children[i], key, value, list);
-        if (t->keys[i] == key && t->values[i] == value) {
-            list::add(list::size(list), t->keys[i], list);
+
+template<typename K, typename V, typename Condizione>
+void select(Node<K, V>* const& t, Condizione cond, list::List& l) {
+    if (t != nullptr) {
+        for (int i = 0; i < t->n; i++) {
+            select(t->children[i], cond, l);
+            if (cond(t->keys[i], t->values[i])) {
+                list::add(list::size(l), t->keys[i], l);
+            }
         }
+        select(t->children[t->n], cond, l);
     }
-    whereEqualsTo(t->children[t->n], key, value, list);
 }

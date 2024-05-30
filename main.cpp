@@ -1,4 +1,4 @@
-/*#include "btree/btree.h"
+/*#include "btree.h"
 #include <iostream>
 #include "string"
 using namespace std;
@@ -40,6 +40,11 @@ int insertMenu(){
         cout << msg << endl;
         return insertMenu();
     }
+}
+
+
+namespace btree {
+    int MIN_CHILDREN = 2; // or whatever value you want to assign
 }
 int main() {
     BTree<string, int> t = createEmptyBTree<string, int>(2);
@@ -106,7 +111,7 @@ int main() {
     return 0;
 }
 
- */
+*/
 
 #include "network.h"
 #include <iostream>
@@ -121,6 +126,7 @@ namespace btree {
 }
 int main() {
     try{
+        /*
         // Create an empty network
         Network net = createEmptyNetwork();
 
@@ -145,17 +151,22 @@ int main() {
         assert(createGroup("Alice", "Group1", net));
 
         assert(joinGroup("Bob", "Group1", net));
-        btree::print(net->groups);
         assert(leaveGroup("Bob", "Group1", net));
 
         // Test delete functions
         assert(deleteMember("Charlie", net));
         assert(deleteGroup("Group1", net));
-
+        */
         using namespace std;
+        Network net = createEmptyNetwork();
+        assert(addMember("Alice", net));
+        assert(addMember("Bob", net));
+        assert(addMember("Charlie", net));
+        assert(addMember("David", net));
         // Test list functions
         list::List memberList = members(net);
-        cout<<size(memberList)<<endl;
+        cout<<"stampo"<<endl;
+        toString(memberList);
         list::List groupList = groups(net);
         cout<<size(groupList)<<endl;
         list::List friendList = friends("Alice", net);

@@ -11,7 +11,6 @@ int findKey(BTree<K,V>& t, const K& key){
 
 template<typename K,typename V>
 void shiftRight(BTree<K,V>& t, int i){ // Change to int
-    cout<<"shiftRight"<<endl;
     for(int j=i+1; j<t->n; j++){
         t->keys[j-1] = t->keys[j];
         t->values[j-1] = t->values[j];
@@ -21,7 +20,6 @@ void shiftRight(BTree<K,V>& t, int i){ // Change to int
 
 template<typename K,typename V>
 BTree<K,V> Predecessor(BTree<K,V>& t, unsigned int i){
-    cout<<"Predecessor"<<endl;
     BTree<K,V> pred = t->children[i];
     while(!pred->isLeaf){
         pred = pred->children[pred->n];
@@ -31,7 +29,7 @@ BTree<K,V> Predecessor(BTree<K,V>& t, unsigned int i){
 
 template<typename K,typename V>
 BTree<K,V> Successor(BTree<K,V>& t, unsigned int i){
-    cout<<"Successor"<<endl;
+
     BTree <K, V> succ = t->children[i + 1];
     while(!succ->isLeaf){
         succ = succ->children[0];
@@ -41,7 +39,7 @@ BTree<K,V> Successor(BTree<K,V>& t, unsigned int i){
 
 template<typename K,typename V>
 void mergeTogether(BTree<K,V>& t,int i){
-    cout<<"mergeTogether"<<endl;
+
     BTree<K,V> child = t->children[i];
     BTree<K,V> sibling = t->children[i+1];
     child->keys[MIN_CHILDREN-1] = t->keys[i];
@@ -65,12 +63,12 @@ void mergeTogether(BTree<K,V>& t,int i){
     child->n = 2*MIN_CHILDREN-1;
     t->n--;
     delete sibling;
-    cout<<"mergeTogether end"<<endl;
+
 }
 
 template<typename K,typename V>
 void fill(BTree<K,V>& t, int i){
-    cout<<"fill"<<endl;
+
     if(i != 0 && t->children[i-1]->n >= MIN_CHILDREN){
         //case 1: the child that precedes the key has at least minChildren keys
         BTree<K,V> child = t->children[i];
@@ -127,6 +125,11 @@ void fill(BTree<K,V>& t, int i){
 
 template<typename K,typename V>
 bool remove(BTree<K,V>& t, const K& key){
+     V value;
+     if(search(t, key, value) == false){
+         return false;
+     }
+
      int i = findKey(t, key);
 
     if(i < t->n && t->keys[i] == key){// key is into this node

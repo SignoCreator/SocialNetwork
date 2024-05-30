@@ -36,7 +36,7 @@ namespace network {
     };
 
     bool isEmpty(const Network& net){
-        return btree::isEmpty(net->net);
+        return net->net->n == 0;
     }
 
     Network createEmptyNetwork(){
@@ -94,10 +94,10 @@ namespace network {
     }
 
     bool joinGroup(string usr_Log, string g_Name, Network &net){
-        User user;
+        User u;
         groupStruct group;
-        if(search(net->net, usr_Log, user) && search(net->groups, g_Name, group)) {
-            insert(group.members, usr_Log, user);
+        if(search(net->net, usr_Log, u) && search(net->groups, g_Name, group)) {
+            insert(group.members, usr_Log, u);
             return true;
         }
         return false;
@@ -108,6 +108,7 @@ namespace network {
     }
 
     bool deleteGroup(string g_Name, Network &net){
+
         return remove(net->groups, g_Name);
     }
 
@@ -128,7 +129,8 @@ namespace network {
             if(group.creator->userLogin == usr_Log) {
                 return deleteGroup(g_Name, net);
             }
-            return remove(group.members, usr_Log);
+            bool res = remove(group.members, usr_Log);
+            return res;
         }
         return false;
     }
@@ -157,36 +159,24 @@ namespace network {
 
     list::List memberOf(string usr_Log, const Network &net){
         list::List l = list::createEmpty();
+        auto cond = [usr_Log](const GroupIdType& k, const groupStruct& g) {
+            User u;
+            return search(g.members, usr_Log, u);
+        };
+        select(net->groups, cond, l);
         return l;
     }
 
     list::List creatorOf(string usr_Log, const Network &net){
         list::List l = list::createEmpty();
-        /* for(int i = 0; i < net->groups->size; i++){
-             if(net->groups->creator == usr_Log)
-                 list::add(l,net->groups->creator);
-         }*/
-         return l;
+        auto cond = [usr_Log](const GroupIdType& k, const groupStruct& g) {
+            return g.creator->userLogin == usr_Log;
+        };
+        select(net->groups, cond, l);
+        return l;
      }
 
      bool makeMoreFriends(string usr_Log, Network &net){
-       /*  User u;
-         if(!search(net->net, usr_Log, u))
-             return false;
-         for(int i = 0; i < u->friends->size; i++){
-             User v;
-             if(search(net->net, u->friends[i], v)){
-                 for(int j = 0; j < v->friends->size; j++){
-                     if(v->friends[j] != usr_Log) {
-                         try {
-                             insert(u->friends, v->friends[j], v->friends[j]);
-                         } catch (BTreeException &e) {
-                             return false;
-                         }
-                     }
-                 }
-             }
-         }*/
          return true;
      }
 
