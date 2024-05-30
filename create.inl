@@ -136,10 +136,10 @@ template<typename K, typename V>
 void mergeTrees(BTree<K,V>& t, BTree<K,V>& t2) {
     if (t == EMPTY_TREE)return;
     for (int i = 0; i < t->n; i++) {
-        traverseAndInsert(t->children[i], t2, minChildren);
+        mergeTrees(t->children[i], t2, minChildren);
         insert(t2, t->keys[i], t->values[i], minChildren);
     }
-    traverseAndInsert(t->children[t->n], t2, minChildren);
+    mergeTrees(t->children[t->n], t2, minChildren);
 }
 
 
