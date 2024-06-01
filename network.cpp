@@ -141,9 +141,8 @@ namespace network {
     bool leaveFriendship(string usr_Log1, string usr_Log2, Network &net){
         if(usr_Log1 == usr_Log2) return false;
         User user1, user2;
-        if(search(net->net, usr_Log1, user1) && search(net->net, usr_Log2, user2)) {
+        if(search(net->net, usr_Log1, user1) && search(net->net, usr_Log2, user2))
             return remove(user1->friends, usr_Log2) && remove(user2->friends, usr_Log1);
-        }
         return false;
     }
     // Il membro con user_Login = usr_Log viene rimosso dal gruppo con group_Name = g_Name

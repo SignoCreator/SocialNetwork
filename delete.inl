@@ -9,7 +9,7 @@ int findKey(BTree<K,V>& t, const K& key){
 }
 
 template<typename K,typename V>
-void shiftRight(BTree<K,V>& t, int i){ // Change to int
+void shiftRight(BTree<K,V>& t, int i){
     for(int j=i+1; j<t->n; j++){
         t->keys[j-1] = t->keys[j];
         t->values[j-1] = t->values[j];
@@ -36,7 +36,6 @@ BTree<K,V> Successor(BTree<K,V>& t, unsigned int i){
 
 template<typename K,typename V>
 void mergeTogether(BTree<K,V>& t,int i){
-
     BTree<K,V> child = t->children[i];
     BTree<K,V> sibling = t->children[i+1];
     child->keys[MIN_CHILDREN-1] = t->keys[i];
