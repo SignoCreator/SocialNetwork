@@ -122,7 +122,7 @@ int main() {
     return 0;
 }
 
-*/
+
 
 #include "network.h"
 #include <iostream>
@@ -177,7 +177,7 @@ int main() {
 
 
         // Test list functions
-    /*    list::List memberList = members(net);
+        list::List memberList = members(net);
         cout<<"stampo"<<endl;
         toString(memberList);
         list::List groupList = groups(net);
@@ -185,7 +185,7 @@ int main() {
         list::List friendList = friends("Alice", net);
         cout<<size(friendList)<<endl;
         list::List memberOfList = memberOf("Alice", net);
-        cout<<size(memberOfList)<<endl;*/
+        cout<<size(memberOfList)<<endl;
         list::List creatorOfList = creatorOf("Alice", netw);
         cout<<size(creatorOfList)<<endl;
 
@@ -199,3 +199,5 @@ int main() {
 
     return 0;
 }
+
+ */

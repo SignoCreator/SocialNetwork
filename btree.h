@@ -74,6 +74,9 @@ namespace btree {
     bool remove(BTree<K,V>&, const K&);
 
     template<typename K,typename V>
+    void size(const BTree<K,V>& t,int& count);
+
+    template<typename K,typename V>
     void print(BTree<K,V>& t);
 
     template<typename K,typename V>
@@ -89,8 +92,8 @@ namespace btree {
     void mergeTrees(BTree<K,V>& t1, BTree<K,V>& t2);
     #include "create.inl"
     #include "read.inl"
-    #include "update.inl"
-    //#include "delete.inl"
+    //#include "update.inl"
+    #include "delete.inl"
 
 }
 

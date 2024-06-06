@@ -1,7 +1,10 @@
 template<typename K,typename V>
 bool search(const BTree<K,V>& t, const K& key, V& value) {
-    if(isEmpty(t))
+    if(isEmpty(t)){
+        cout<<"Tree is empty"<<endl;
         return false;
+    }
+
     int i = 0;
     while (i < t->n && key > t->keys[i])
         i++;
@@ -10,6 +13,7 @@ bool search(const BTree<K,V>& t, const K& key, V& value) {
         return true;
     }
     if (t->isLeaf){
+        cout << "Key not found" << endl;
         return false;
     }
     return search(t->children[i], key, value);
@@ -50,18 +54,20 @@ void print(BTree<K,V>& t) {
 
 
 template<typename K,typename V>
-void toList(BTree<K,V>& t, list::List& list) {
-    if (t == nullptr) {
-        return;
+void toList(BTree<K,V>& t, list::List& l) {
+    if (t != nullptr) {
+        for (int i = 0; i < t->n; i++) {
+            // Add the subtree rooted at child i to the list
+            if (!t->isLeaf)
+                toList(t->children[i], l);
+            // Add key and value to the list
+            list::add(list::size(l), t->keys[i], l);
+        }
+        // Add the subtree rooted at last child to the list
+        if (!t->isLeaf)
+            toList(t->children[t->n], l);
     }
-    for (int i = 0; i < t->n; i++) {
-        toList(t->children[i], list);
-        std::cout << t->keys[i] << " ";
-        list::add(list::size(list), t->keys[i], list);
-    }
-    toList(t->children[t->n], list);
 }
-
 
 template<typename K, typename V, typename Condizione>
 void idSelector(Node<K, V>* const& t, Condizione cond, list::List& l) {
@@ -81,4 +87,12 @@ bool exists(const BTree<K,V>& t, const K& key) {
     return search(t, key, value);
 }
 
-
+template<typename K,typename V>
+void size(const BTree<K,V>& t,int& count) {
+    if (!isEmpty(t)) {
+        for (int i = 0; i < t->n; i++) {
+            btree::size(t->children[i], ++count);
+        }
+        btree::size(t->children[t->n], ++count);
+    }
+}

@@ -24,7 +24,6 @@ bool isEmpty(const BTree<K,V>& t) {
  */
 template<typename K, typename V>
 bool insert(BTree<K, V>& t, const K& key, const V& value, int minChildren) {
-
     const int MAX_CHILDREN = 2 * minChildren;
     // If the tree is empty, create a new node with the key-value pair.
     if (isEmpty(t)) {
@@ -134,12 +133,12 @@ bool insertNonFull(BTree<K, V>& t, const K& key, const V& value, int minChildren
 
 template<typename K, typename V>
 void mergeTrees(BTree<K,V>& t, BTree<K,V>& t2) {
-    if (t == EMPTY_TREE)return;
+    if (isEmpty(t))return;
     for (int i = 0; i < t->n; i++) {
-        mergeTrees(t->children[i], t2, minChildren);
-        insert(t2, t->keys[i], t->values[i], minChildren);
+        mergeTrees(t->children[i], t2);
+        insert(t2, t->keys[i], t->values[i]);
     }
-    mergeTrees(t->children[t->n], t2, minChildren);
+    mergeTrees(t->children[t->n], t2);
 }
 
 
